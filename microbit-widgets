@@ -1,50 +1,61 @@
-module = 1
+from microbit import *
+import music
 
+# Variables
+module  = 1
+modules = 4
+
+# Inputs
 def on_button_pressed_a():
     global module
     if module >= 2:
-        module -= -1
-input.on_button_pressed(Button.A, on_button_pressed_a)
+        module -= 1
+button_a(on_button_pressed_a)
 
 def on_button_pressed_b():
-    global module
-    if module >= 1:
+    global module, modules
+    if module <= modules:
         module += 1
-input.on_button_pressed(Button.B, on_button_pressed_b)
+button_b(on_button_pressed_b)
+
 
 while True:
+    # Temperature
     while module == 1:
-        basic.show_number(input.temperature())
+        display.show(temperature())
 
+    # Compass
     while module == 2:
-        if input.compass_heading() >= 330 and input.compass_heading() < 30:
-            basic.show_arrow(ArrowNames.NORTH)
-        elif input.compass_heading() >= 30 and input.compass_heading() < 60:
-            basic.show_arrow(ArrowNames.NORTH_EAST)
-        elif input.compass_heading() >= 60 and input.compass_heading() < 120:
-            basic.show_arrow(ArrowNames.EAST)
-        elif input.compass_heading() >= 120 and input.compass_heading() < 150:
-            basic.show_arrow(ArrowNames.SOUTH_EAST)
-        elif input.compass_heading() >= 150 and input.compass_heading() < 210:
-            basic.show_arrow(ArrowNames.SOUTH)
-        elif input.compass_heading() >= 210 and input.compass_heading() < 240:
-            basic.show_arrow(ArrowNames.SOUTH_WEST)
-        elif input.compass_heading() >= 240 and input.compass_heading() < 300:
-            basic.show_arrow(ArrowNames.WEST)
-        elif input.compass_heading() >= 300 and input.compass_heading() < 330:
-            basic.show_arrow(ArrowNames.NORTH_WEST)
+        if compass.heading() >= 330 and compass.heading() < 30:
+            display.show_arrow(Image.ARROW_N)
+        elif compass.heading() >= 30 and compass.heading() < 60:
+            display.show_arrow(Image.ARROW_NE)
+        elif compass.heading() >= 60 and compass.heading() < 120:
+            display.show_arrow(Image.ARROW_E)
+        elif compass.heading() >= 120 and compass.heading() < 150:
+            display.show_arrow(Image.ARROW_SE)
+        elif compass.heading() >= 150 and compass.heading() < 210:
+            display.show_arrow(Image.ARROW_S)
+        elif compass.heading() >= 210 and compass.heading() < 240:
+            display.show_arrow(Image.ARROW_SW)
+        elif compass.heading() >= 240 and compass.heading() < 300:
+            display.show_arrow(Image.ARROW_W)
+        elif compass.heading() >= 300 and compass.heading() < 330:
+            display.show_arrow(Image.ARROW_NW)
         else:
-            basic.show_arrow(ArrowNames.NORTH)
+            display.show_arrow(Image.ARROW_N)
 
+    # Dice
     while module == 3:
-        basic.show_number(0)
-        basic.clear_screen()
+        display.show(0)
+        display.clear_screen()
         def on_gesture_shake():
-            basic.show_number(randint(0,6))
+            display.show(randint(0,6))
         input.on_gesture(Gesture.SHAKE, on_gesture_shake)
 
+    # Rick roll
     while module == 4:
-        basic.show_icon(IconNames.EIGTH_NOTE)
+        display.show_icon(IconNames.EIGTH_NOTE)
         music.set_built_in_speaker_enabled(True)
         music.set_tempo(114)
         music.play_tone(262, music.beat(BeatFraction.WHOLE))
@@ -67,4 +78,3 @@ while True:
         music.play_tone(196, music.beat(BeatFraction.WHOLE))
         music.rest(music.beat(BeatFraction.DOUBLE))
         music.rest(music.beat(BeatFraction.WHOLE))
-        music.rest(music.beat(BeatFraction.HALF))

@@ -1,5 +1,6 @@
 from microbit import *
 import music
+from random import randint
 
 # Variables
 module  = 1
@@ -51,11 +52,11 @@ while True:
         display.clear_screen()
         def on_gesture_shake():
             display.show(randint(0,6))
-        input.on_gesture(Gesture.SHAKE, on_gesture_shake)
+        accelerometer.is_gesture()
 
     # Rick roll
     while module == 4:
-        display.show_icon(IconNames.EIGTH_NOTE)
+        display.show(Image.MUSIC_CROTCHET)
         music.set_built_in_speaker_enabled(True)
         music.set_tempo(114)
         music.play_tone(262, music.beat(BeatFraction.WHOLE))

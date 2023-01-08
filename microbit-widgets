@@ -37,6 +37,13 @@ while True:
             basic.show_arrow(ArrowNames.NORTH)
 
     while module == 3:
+        basic.show_number(0)
+        basic.clear_screen()
+        def on_gesture_shake():
+            basic.show_number(randint(0,6))
+        input.on_gesture(Gesture.SHAKE, on_gesture_shake)
+
+    while module == 4:
         basic.show_icon(IconNames.EIGTH_NOTE)
         music.set_built_in_speaker_enabled(True)
         music.set_tempo(114)
@@ -61,4 +68,3 @@ while True:
         music.rest(music.beat(BeatFraction.DOUBLE))
         music.rest(music.beat(BeatFraction.WHOLE))
         music.rest(music.beat(BeatFraction.HALF))
-

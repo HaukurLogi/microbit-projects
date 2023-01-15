@@ -1,5 +1,5 @@
 from microbit import *
-import time
+from random import randint
 
 # Lists
 collision_blocks = []
@@ -7,38 +7,57 @@ collision_blocks = []
 # Integers
 row = 0
 column = 2
-coordinates = int(str(row) + str(column))
+random_block = randint(1, 3)
+coordinates = 0
 down_speed = 750
 
+
 # Blocks
-normal_block = display.set_pixel(column, row, 9)
-half_box_block = display.set_pixel(column, row, 9), display.set_pixel(column + 1, row, 9), display.set_pixel(column, row - 1, 9)
+def blocks(light_level):
+    global row, column, random_block
+
+    # Arrow block
+    if random_block == 1:
+        display.set_pixel(column, row, light_level)
+        display.set_pixel((column + 1), row, light_level)
+        if row > 0:
+            display.set_pixel(column, (row - 1), light_level)
+    # Cube
+    elif random_block == 2:
+        display.set_pixel(column, row, light_level)
+    # Long block
+    else: 
+        if row > 0:
+            display.set_pixel(column, (row - 1), light_level)
+        display.set_pixel(column, row, light_level)
+        display.set_pixel(column, (row + 1), light_level)
 
 # Startup
-display.set_pixel(column, row, 9)
+blocks(9)
 
 while True:
     if button_a.is_pressed():
-        display.set_pixel(column, row, 0)
+        blocks(0)
         if coordinates - 10 not in collision_blocks:
             column -= 1
-        display.set_pixel(column, row, 9)
+        blocks(9)
 
     if button_b.is_pressed():
-        display.set_pixel(column, row, 0)
+        blocks(0)
         if coordinates + 10 not in collision_blocks:
             column += 1
-        display.set_pixel(column, row, 9)
+        blocks(9)
 
-    time.sleep_ms(down_speed)
+    sleep(down_speed)
 
     if row < 4 and coordinates + 1 not in collision_blocks:
-        display.set_pixel(column, row, 0)
+        blocks(0)
         row += 1
-        display.set_pixel(column, row, 9)
+        blocks(9)
 
-    if row == 4 or coordinates + 1 in collision_blocks:
+    if row == 5 or coordinates + 1 in collision_blocks:
         collision_blocks.append(coordinates)
         row = 0
         column = 2
-        display.set_pixel(column, row, 9)
+        random_block = randint(1, 3)
+        blocks(9)

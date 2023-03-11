@@ -11,7 +11,6 @@ vertical_direction = accelerometer.get_y()
 
 
 while True:
-
     coordinates = int(str(column) + str(row))
     display.set_pixel(column, row, 9)
 
